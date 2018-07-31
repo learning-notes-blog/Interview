@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+<script>
+	const pristine = {
+		"a": 1, //Number
+		"b": 'test', //String
+		"c": true, //Boolean
+		"d": undefined, //Undefined
+		"e": null, 
+		"f": [1,2,3,4],
+		"g": {
+			"z":1, 
+			"y":[
+				'test2',
+				null,
+				undefined,
+				1,
+				2,
+				{
+					"u": 1,
+					"v": [1,2,3,4,5]
+				}
+			]
+		},
+		"h": function(a){
+			console.log(a)
+		},
+		"i":{
+			"a":1
+		},
+		"j": document.body,
+		"k": Symbol('test')
+	}
+
+let res = ''
+
+const deepCopy = (p)=>{
+	if(p instanceof Element) {
+        return p;
+	}
+	if(Object.prototype.toString.call(p) === '[object Array]'){
+		let arr = []
+
+		for(let i = 0; i< p.length; i++){
+			arr.push(deepCopy(p[i]))
+		}
+		return arr
+	}
+	if(Object.prototype.toString.call(p) === '[object Object]'){
+		let json = {}
+		for(let name in p){
+			if(p.hasOwnProperty(name)){
+				json[name] = deepCopy(p[name])
+			}
+		}
+		return json
+	}
+
+	return p
+	/*if(
+		Object.prototype.toString.call(p) === '[object Function]' || 
+		Object.prototype.toString.call(p) === '[object Date]' || 
+		Object.prototype.toString.call(p) === '[object RegExp]' ||
+		Object.prototype.toString.call(p) === '[object Null]' ||
+		Object.prototype.toString.call(p) === '[object Symbol]'){
+		return p
+	}*/
+}
+
+res = deepCopy(pristine)
+
+pristine.g.y[5] = {}
+pristine.k = Symbol('test2')
+
+/*console.log(res)
+console.log(pristine)
+console.log(JSON.stringify(res))*/
+
+//------------------------------------------------
+//Symbol 属于基本类型
+//
+//作为属性名 访问需要使用[],不能使用 .
+	//
+	let a = {}
+	let e = Symbol('e')
+	let f = Symbol('f')
+
+	a[e] = 'someting'
+
+	a[f] = function(arg){
+		console.log(arg)
+	}
+	console.log(a[e])
+	a[f](1)
+	//
+//
+</script>
+</body>
+</html>

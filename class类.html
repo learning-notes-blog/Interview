@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<script>
+	
+	//可以constructor 不写
+	//
+	//调用类 必须用new
+	class A {
+
+	}
+
+	let a = new A()
+
+	console.log(a)
+	//类内部定义的方法 不可枚举
+	class B {
+		constructor(b){
+			this.b = b
+		}
+
+		go(){
+
+		}
+	}
+
+	console.log(B.prototype)
+	console.log(Object.keys(B.prototype))
+
+	for(let name in B.prototype){
+		console.log(name)
+	}
+	console.log(Object.getOwnPropertyNames(B.prototype))
+
+
+	//表达式定义 类
+	const  C = class D{
+		getName(){
+			return D.name
+		}
+	}
+
+	// D只能 在类内部使用
+	
+
+	//私有属性
+	//可以用 Symbol
+		
+	const bar = Symbol('bar')
+
+	const E = class {
+		[bar](){
+			return 1
+		}
+	} 
+
+	console.log
+	console.log(Object.getOwnPropertyNames(E.prototype))
+
+
+	//class用类似于解构的方式获取原型上的方法
+	
+	class F {
+
+		constructor(){
+			this.a = 1
+		}
+
+		f(){
+			console.log(this.a)
+		}
+
+		logThis(){
+			console.log(this)
+		}
+	}
+	const fn = new F()
+	const { f, logThis } = fn
+
+	function F2(){
+		this.a = 1
+	}
+
+	F2.prototype.f2 = function(){
+		console.log(this.a)
+	}
+	F2.prototype.logThis2 = function(){
+		console.log(this)
+	}
+
+	const fn2 = new F2()
+	const { f2, logThis2 } = fn2
+
+
+	//f()    //报错Cannot read property 'a' of undefined	
+	//f2()   //undefined
+	logThis()
+	logThis2()
+
+//不同点   	1.必须使用new
+//			2.类内部定义的方法 不可枚举
+//			3.class 没有变量提升
+//			4.单独调用prototype上的方法， class方式的  this 是undefined. function方式的 this 是window
+//			5.继承 需要 super()
+
+
+	class FF extends F {
+		//默认执行 
+		/*constructor(...args){
+			super(...args)
+		}*/
+	}
+
+
+
+</script>
+</body>
+</html>

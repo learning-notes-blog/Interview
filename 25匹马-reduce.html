@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+
+<script>
+	const sorted = []
+	// return [n, m)
+	const ini = (n, m)=>{
+		return Math.floor( Math.random() * ( m - n ) + n ) 
+	}
+	//return [ [1,2,3,4,5],[1,2,3,4,5],[1,2,3,4,5],[1,2,3,4,5],[1,2,3,4,5]] 
+	const createHorse = ()=>{
+		const arr = []
+		for(let i = 0; i < 5; i++){
+			const tmp = []
+			for(let j = 0; j < 5; j++){
+				tmp.push( ini(1, 20000) )
+			}
+			arr.push(tmp)
+		}
+		return arr
+	}
+
+	const allHorse = createHorse()
+
+	//count 统计次数
+	let count = 0
+	for(let i = 0 ; i<allHorse.length; i++){
+		allHorse[i].sort((n1, n2)=>{return n2 - n1})
+		count++
+	}
+
+	allHorse.sort((n1, n2)=>{
+		return n2[0] - n1[0]
+	})
+	count++
+
+	let res = allHorse.reduce((res,item,index)=>{
+		if(index < 3){
+			item.pop()
+			item.pop()
+			res.push(item)
+		}
+		return res
+	},[])
+
+	sorted.push(res[0][0])
+
+	let tmpArr = allHorse.reduce( (res, item, index)=>{
+		if(index == 0){
+			res.push(item[1])
+			res.push(item[2])
+		}else if(index == 1){
+			res.push(item[0])
+			res.push(item[1])
+		}else if(index == 2){
+			res.push(item[0])
+		}
+		return res
+	}, [])
+
+	tmpArr.sort((n1,n2)=>{
+		return n2 - n1
+	})
+	count++
+
+	for(let i = 0; i < 2 ; i++){
+		sorted.push(tmpArr[i])
+	}
+
+	console.log(allHorse)
+	console.log(sorted)
+	console.log(count)
+</script>
+</body>
+</html>
